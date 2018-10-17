@@ -1,18 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    public GameObject wall;
 
-    private int width = 128, height = 64;
+    private int width = Constants.WIDTH, height = Constants.HEIGHT;
 
     private int[,] levelGrid;
     private List<GameObject> gos;
 
+    private Vector2 playerSpawn, playerExit;
+
     // parameters
-    private int buildings = 100; // more than 100 might make the game crash
+    private int buildings = 100; // more than 100 might make the game crash because it cannot generate enough buildings
+    private int genLimit = 20000; // how many times to generate buildings
     private int spawnXOffset = 10, spawnYOffset = 5;
+    private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
 
 
     private void GenerateMap()
@@ -28,8 +34,11 @@ public class Level : MonoBehaviour
     {
 
         int bl = 0;
-        while (bl < buildings)
+        int cnt = 0;
+        while (bl < buildings && cnt < genLimit)
         {
+            cnt++;
+
             int buildingWidth, buildingHeight;
             if (Random.value < 0.5f)
             {
@@ -116,8 +125,16 @@ public class Level : MonoBehaviour
 
         // pick a random location for spawn
         int index = Random.Range(0, possibleSpawns.Count);
-        Vector2 spawnLoc = possibleSpawns[index];
-        levelGrid[(int)spawnLoc.x, (int)spawnLoc.y] = 2;
+        playerSpawn = possibleSpawns[index];
+        possibleSpawns.RemoveAt(index);
+        //levelGrid[(int)playerSpawn.x, (int)playerSpawn.y] = 2;
+
+        possibleSpawns = possibleSpawns.OrderBy(x => Vector2.Distance(x, playerSpawn)).ToList();
+        int tlSpawns = possibleSpawns.Count;
+        int minIndex = (int)(tlSpawns * distLimt);
+        index = Random.Range(minIndex, tlSpawns);
+        playerExit = possibleSpawns[index];
+        levelGrid[(int)playerExit.x, (int)playerExit.y] = 3;
     }
 
     private void TestRender()
@@ -133,7 +150,7 @@ public class Level : MonoBehaviour
             {
                 if (levelGrid[x, y] != 0)
                 {
-                    GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    GameObject go = Instantiate(wall);
                     go.transform.position = new Vector3(x, y, 0);
                     gos.Add(go);
 
@@ -144,35 +161,39 @@ public class Level : MonoBehaviour
                         case 2:
                             go.GetComponent<Renderer>().material.color = Color.red;
                             break;
+                        case 3:
+                            go.GetComponent<Renderer>().material.color = Color.yellow;
+                            break;
                     }
                 }
             }
         }
     }
 
-    private void RenderSpawns()
-    {
-
-    }
-
-    private void Awake()
+    public void Initialise()
     {
         levelGrid = new int[width, height];
         gos = new List<GameObject>();
     }
 
-    private void Start()
+    public void CreateLevel()
     {
         GenerateMap();
         TestRender();
     }
 
-    private void Update()
+    public int[,] GetLevel()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            GenerateMap();
-            TestRender();
-        }
+        return levelGrid;
+    }
+
+    public Vector2 GetPlayerSpawn()
+    {
+        return playerSpawn;
+    }
+
+    public Vector2 GetCatSpawn()
+    {
+        return new Vector2(1, 1);
     }
 }
