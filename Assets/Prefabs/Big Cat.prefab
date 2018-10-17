@@ -23,9 +23,11 @@ GameObject:
   - component: {fileID: 212009401773165962}
   - component: {fileID: 50685416392653170}
   - component: {fileID: 114180182020257656}
+  - component: {fileID: 58783441362900976}
+  - component: {fileID: 114720400852429600}
   m_Layer: 0
   m_Name: Big Cat
-  m_TagString: Untagged
+  m_TagString: Cat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,6 +65,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &58783441362900976
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1061497519939952}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!61 &61250745650275920
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -101,6 +118,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 1
   speed: 3.6
+--- !u!114 &114720400852429600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1061497519939952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f36b1f6e4d5f54296e4199d41c9e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!212 &212009401773165962
 SpriteRenderer:
   m_ObjectHideFlags: 1
