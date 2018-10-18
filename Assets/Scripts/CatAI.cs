@@ -75,8 +75,8 @@ public class CatAI : MonoBehaviour
 
     private int GetCurrentGrid()
     {
-        int xpos = Mathf.RoundToInt(transform.position.x);
-        int ypos = Mathf.RoundToInt(transform.position.y);
+        int xpos = Mathf.RoundToInt(transform.position.x / Constants.SIZE_SCALE);
+        int ypos = Mathf.RoundToInt(transform.position.y / Constants.SIZE_SCALE);
 
         return GetNode(xpos, ypos);
     }
@@ -84,8 +84,8 @@ public class CatAI : MonoBehaviour
     private int GetPlayerPos()
     {
         // temporarily set it to mouseclick pos
-        int xpos = Mathf.RoundToInt(player.transform.position.x);
-        int ypos = Mathf.RoundToInt(player.transform.position.y);
+        int xpos = Mathf.RoundToInt(player.transform.position.x / Constants.SIZE_SCALE);
+        int ypos = Mathf.RoundToInt(player.transform.position.y / Constants.SIZE_SCALE);
 
         return GetNode(xpos, ypos);
     }
@@ -154,8 +154,8 @@ public class CatAI : MonoBehaviour
 
         int targetNode = l[1];
 
-        int xPos = targetNode / height;
-        int yPos = targetNode % height;
+        float xPos = (targetNode / height) * Constants.SIZE_SCALE;
+        float yPos = (targetNode % height) * Constants.SIZE_SCALE;
 
         //this.GetComponent<Rigidbody2D>().AddForce(10 * new Vector2(xPos - this.transform.position.x, yPos - this.transform.position.y));
         //this.GetComponent<Rigidbody2D>().MovePosition(new Vector2(xPos, yPos));

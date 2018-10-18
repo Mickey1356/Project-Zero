@@ -151,7 +151,7 @@ public class Level : MonoBehaviour
                 if (levelGrid[x, y] != 0)
                 {
                     GameObject go = Instantiate(wall);
-                    go.transform.position = new Vector3(x, y, 0);
+                    go.transform.position = new Vector3(x * Constants.SIZE_SCALE, y * Constants.SIZE_SCALE, 0);
                     gos.Add(go);
 
                     switch (levelGrid[x, y])
@@ -172,6 +172,7 @@ public class Level : MonoBehaviour
 
     public void Initialise()
     {
+        wall.transform.localScale = Constants.SIZE_SCALE * Vector3.one;
         levelGrid = new int[width, height];
         gos = new List<GameObject>();
     }
@@ -189,11 +190,11 @@ public class Level : MonoBehaviour
 
     public Vector2 GetPlayerSpawn()
     {
-        return playerSpawn;
+        return playerSpawn * Constants.SIZE_SCALE;
     }
 
     public Vector2 GetCatSpawn()
     {
-        return new Vector2(1, 1);
+        return new Vector2(1, 1) * Constants.SIZE_SCALE;
     }
 }

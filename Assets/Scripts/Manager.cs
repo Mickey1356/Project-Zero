@@ -30,5 +30,8 @@ public class Manager : MonoBehaviour
     private void Update()
     {
         cat.GetComponent<CatAI>().UpdateCat();
+
+        // for the perspective tilt
+        Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 5, Constants.CAMERA_LAYER);
     }
 }
