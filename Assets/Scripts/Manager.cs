@@ -25,6 +25,7 @@ public class Manager : MonoBehaviour
         cat.transform.position = level.GetCatSpawn();
 
         player.transform.position = level.GetPlayerSpawn();
+        //cat.GetComponent<CatAI>().UpdateCat();
     }
 
     private void Update()
