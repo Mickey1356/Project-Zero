@@ -6,6 +6,7 @@ public class PlayerScript : MonoBehaviour {
 	private const float timeUntilReset = 3.5f;
 
 	private EntityType type = EntityType.DOG;
+	private string killer = "???";
 
 	public bool canMove = true;
 	public bool canDie = true;
@@ -70,13 +71,13 @@ public class PlayerScript : MonoBehaviour {
 
 	void Update() {
 		if (state == EntityState.DEAD && dying == false ) {
-			Die();
 			dying = true;
+			Die();
 		}
 	}
 
 	void Die() {
-		Debug.Log ("The dog has died!"); //different messages?
+		Debug.Log ("You were killed by a " + killer); //different messages?
 		canMove = false;
 		//death animation, statistics etc.
 		//wait for some time
@@ -89,7 +90,16 @@ public class PlayerScript : MonoBehaviour {
 	public void PlayerTouched(GameObject obj = null) {
 		Debug.Log ("received");
 		if (obj != null && obj.tag == "Cat" && obj.GetComponent<CatController> () != null) {
-			if (obj.GetComponent<CatController> ().EntType == EntityType.BIGCAT && canDie == true) {
+			EntityType ent = obj.GetComponent<CatController> ().EntType;
+			if ((ent == EntityType.BIGCAT || ent == EntityType.SMALLCAT) && canDie == true) {
+				switch (ent) {
+				case (EntityType.BIGCAT):
+					killer = "Big Cat";
+					break;
+				case (EntityType.SMALLCAT):
+					killer = "Small cat";
+					break;
+				}
 				state = EntityState.DEAD;
 
 			}	
