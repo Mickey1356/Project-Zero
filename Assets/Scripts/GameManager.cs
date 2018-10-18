@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour {
 	public void RestartLevel(string option = "default") {
 		if (option == "default") {
 			Debug.Log ("Restarting level...");
+			StopAllCoroutines ();
 			Application.LoadLevel (Application.loadedLevel);
 		}
 	}
