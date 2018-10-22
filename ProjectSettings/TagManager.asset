@@ -5,8 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cat
+<<<<<<< HEAD
   - Dog
   - Wall
+=======
+>>>>>>> marcel2-working
   layers:
   - Default
   - TransparentFX
