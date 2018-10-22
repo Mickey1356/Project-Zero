@@ -294,5 +294,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f108c4ed55ab8af46925653012bc5077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bigCat: {fileID: 1061497519939952, guid: b67b60ced3a2870418a00b6d6bed0a7c, type: 2}
+  bigCat: {fileID: 1752265012364040, guid: de610115391653d4099a19f08c42acf1, type: 2}
   player: {fileID: 599119354}

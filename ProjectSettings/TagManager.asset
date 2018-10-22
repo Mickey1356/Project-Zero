@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Cat
   - Dog
-  - BigCat
   - Wall
   layers:
   - Default
@@ -16,7 +16,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Entity
   - 
   - 
   - 
