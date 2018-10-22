@@ -25,7 +25,8 @@ GameObject:
   - component: {fileID: 114180182020257656}
   - component: {fileID: 58783441362900976}
   - component: {fileID: 114720400852429600}
-  m_Layer: 0
+  - component: {fileID: 114368434467165436}
+  m_Layer: 2
   m_Name: Big Cat_old
   m_TagString: Cat
   m_Icon: {fileID: 0}
@@ -86,7 +87,7 @@ BoxCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1061497519939952}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -118,6 +119,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canMove: 1
   speed: 3.6
+--- !u!114 &114368434467165436
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1061497519939952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d24324398ff2a2c448e03b0205a6beb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114720400852429600
 MonoBehaviour:
   m_ObjectHideFlags: 1

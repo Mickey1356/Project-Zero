@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4931628675878294}
   - component: {fileID: 61867054848445504}
   - component: {fileID: 212021024041975340}
-  - component: {fileID: 114888964792432066}
   - component: {fileID: 114786540176968302}
   m_Layer: 2
   m_Name: BigCatOld
@@ -79,21 +78,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24324398ff2a2c448e03b0205a6beb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114888964792432066
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1752265012364040}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb5936f3bdd48fd449b2bf60480c6483, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  canMove: 1
-  speed: 3.6
-  rb2d: {fileID: 0}
 --- !u!212 &212021024041975340
 SpriteRenderer:
   m_ObjectHideFlags: 1
