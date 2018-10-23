@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MoveScript : MonoBehaviour {
 
+	//ADD: let the cat vary their speed or stumble once in a while, while in a group, so it varies movement. Let the cat kinda move sideways randomly to let variation.
+
 	GameObject player;
 	[SerializeField] private bool canMove;
 	[SerializeField] private float speed;
@@ -17,6 +19,11 @@ public class MoveScript : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		rb2d = GetComponent<Rigidbody2D> ();
+	}
+	int i = 0;
+	public void SetCanMove(bool input) {
+		disabled = !input;
+		Debug.Log ("i set move " + input + " " + i++);
 	}
 
 	void Start() {
@@ -102,13 +109,11 @@ public class MoveScript : MonoBehaviour {
 			Vector2 move = direction * speed;
 			rb2d.velocity = move;
 
+		} else if (canMove) {
+			rb2d.velocity = Vector2.zero;
 		}
 	}
 
 	// Update is called once per frame
-	void Update () {
-		if (canMove) {
-			
-		}
-	}
+
 }

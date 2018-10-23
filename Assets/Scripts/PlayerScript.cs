@@ -78,6 +78,7 @@ public class PlayerScript : MonoBehaviour {
 
 	void Die() {
 		Debug.Log ("You were killed by a " + killer); //different messages?
+		GameManager.gameManager.Increment("deaths");
 		canMove = false;
 		//death animation, statistics etc.
 		//wait for some time
@@ -86,7 +87,7 @@ public class PlayerScript : MonoBehaviour {
 		//reset game
 		GameManager.gameManager.RestartLevel ();
 	}
-
+		
 	public void PlayerTouched(GameObject obj = null) {
 		Debug.Log ("received");
 		if (obj != null && obj.tag == "Cat" && obj.GetComponent<CatController> () != null) {

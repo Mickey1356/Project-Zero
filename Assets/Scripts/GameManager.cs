@@ -74,12 +74,45 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
-		gameManager = this;
+	public void Increment(string type) {
+		switch (type) {
+		case ("deaths"):
+			deaths++;
+			break;
+		case ("growlsLocal"):
+			break;
+		}
+	}
+
+	void Awake ()   
+	{
+		if (gameManager == null)
+		{
+			DontDestroyOnLoad(gameObject);
+			gameManager = this;
+		}
+		else if (gameManager != this)
+		{
+			Destroy (gameObject);
+		}
+	}
+
+	void DisplayAllStats() {
+
+	}
+
+	void QueryStats(string category) {
+
 	}
 
 	void Start() {
 		player = PlayerScript.player;
+	}
+
+	void Update() {
+		if (player == null) {
+			player = PlayerScript.player;
+		}
 	}
 
 	public void RestartLevel(string option = "default") {

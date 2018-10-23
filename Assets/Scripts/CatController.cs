@@ -8,7 +8,13 @@ public class CatController : MonoBehaviour {
 	private MoveScript mvscript;
 	[SerializeField] private float timeUntilTouching = 0.1f; //time taken after appearing until small cat can touch player. safety precautions
 	[SerializeField] private EntityType type = EntityType.BIGCAT;
-	private int catId;
+	public int catId;
+	private static int currentCatId;
+
+	//private CatAI catai;
+	private MoveScript move;
+
+
 	[SerializeField] private bool canTouch = true;
 	public bool CanTouch {
 		get {
@@ -23,6 +29,12 @@ public class CatController : MonoBehaviour {
 		}
 	}
 
+	void Awake() {
+		catId = currentCatId;
+		currentCatId++;
+		move = GetComponent<MoveScript> ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		if (EntType == EntityType.SMALLCAT) {
@@ -35,6 +47,44 @@ public class CatController : MonoBehaviour {
 		}
 	}
 		
+	public void Immobilize(float time) {
+		StartCoroutine (immobilize (time));
+	}
+
+	IEnumerator immobilize(float time) {
+		if (EntType == EntityType.SMALLCAT) {
+			this.Freeze ();
+			yield return new WaitForSeconds (time);
+			this.UnFreeze ();
+		}
+		if (EntType == EntityType.BIGCAT) {
+			this.Freeze ();
+			//yield return new WaitForSeconds (time);
+			this.UnFreeze();
+		}
+	}
+
+	public void Freeze() {
+		switch (EntType) {
+		case EntityType.SMALLCAT:
+			move.SetCanMove (false);
+			break;
+		case EntityType.BIGCAT:
+			//catai.SetCanMove(false);
+			break;
+		}
+	}
+
+	public void UnFreeze() {
+		switch (EntType) {
+		case EntityType.SMALLCAT:
+			move.SetCanMove (true);
+			break;
+		case EntityType.BIGCAT:
+			//catai.SetCanMove(true);
+			break;
+		}
+	}
 
 	IEnumerator TouchWait() {
 		yield return new WaitForSeconds (timeUntilTouching);
@@ -49,7 +99,7 @@ public class CatController : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (canTouch) { // if it is a small cat, it cannot touch after some time it appears out of hiding. for safety precautions, or gives some time before cat can touch.
-			Debug.Log ("Detecting");
+			//Debug.Log ("Detecting");
 			if (other.gameObject.tag == "Player") {
 				Debug.Log ("Player detected.");
 				PlayerScript.playerScript.PlayerTouched (gameObject);
@@ -59,7 +109,7 @@ public class CatController : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D other) {
 		if (canTouch) { // if it is a small cat, it cannot touch after some time it appears out of hiding. for safety precautions, or gives some time before cat can touch.
-			Debug.Log ("Detecting");
+			//Debug.Log ("Detecting");
 			if (other.gameObject.tag == "Player") {
 				Debug.Log ("Player detected.");
 				PlayerScript.playerScript.PlayerTouched (gameObject);
