@@ -12,13 +12,16 @@ public class Level : MonoBehaviour
     private int[,] levelGrid;
     private List<GameObject> gos;
 
-    private Vector2 playerSpawn, playerExit;
+    private Vector2 playerSpawn, playerExit, catSpawn;
 
     // parameters
     private int buildings = 100; // more than 100 might make the game crash because it cannot generate enough buildings
     private int genLimit = 20000; // how many times to generate buildings
     private int spawnXOffset = 10, spawnYOffset = 5;
     private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
+
+    private float catMin = 0.1f;
+    private float catMax = 0.15f;
 
 
     private void GenerateMap()
@@ -135,6 +138,13 @@ public class Level : MonoBehaviour
         index = Random.Range(minIndex, tlSpawns);
         playerExit = possibleSpawns[index];
         levelGrid[(int)playerExit.x, (int)playerExit.y] = 3;
+
+        int catMinIndex = (int)(tlSpawns * catMin);
+        int catMaxIndex = (int)(tlSpawns * catMax);
+        index = Random.Range(catMinIndex, catMaxIndex);
+        catSpawn = possibleSpawns[index];
+        //levelGrid[(int)catSpawn.x, (int)catSpawn.y] = 4;
+        
     }
 
     private void TestRender()
@@ -163,6 +173,9 @@ public class Level : MonoBehaviour
                             break;
                         case 3:
                             go.GetComponent<Renderer>().material.color = Color.yellow;
+                            break;
+                        case 4:
+                            go.GetComponent<Renderer>().material.color = Color.green;
                             break;
                     }
                 }
@@ -195,6 +208,6 @@ public class Level : MonoBehaviour
 
     public Vector2 GetCatSpawn()
     {
-        return new Vector2(1, 1) * Constants.SIZE_SCALE;
+        return catSpawn * Constants.SIZE_SCALE;
     }
 }

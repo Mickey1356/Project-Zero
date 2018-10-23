@@ -118,6 +118,20 @@ GameObject:
   m_PrefabParentObject: {fileID: 1944025250268532, guid: 8f52c844765f81243b264e6106f79d2e,
     type: 2}
   m_PrefabInternal: {fileID: 1126779548}
+--- !u!114 &599119361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 599119354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234abb4b703bef8478ee00b8b7334901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMove: 1
+  canDie: 1
+  state: 0
 --- !u!1001 &1126779548
 Prefab:
   m_ObjectHideFlags: 0
@@ -251,6 +265,7 @@ GameObject:
   - component: {fileID: 2040864124}
   - component: {fileID: 2040864123}
   - component: {fileID: 2040864125}
+  - component: {fileID: 2040864126}
   m_Layer: 0
   m_Name: _Controller
   m_TagString: Untagged
@@ -294,5 +309,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f108c4ed55ab8af46925653012bc5077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bigCat: {fileID: 1061497519939952, guid: b67b60ced3a2870418a00b6d6bed0a7c, type: 2}
+  bigCat: {fileID: 1920577319557524, guid: f0bc25aa609999c47aa060e2687a2961, type: 2}
+  player: {fileID: 599119354}
+--- !u!114 &2040864126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2040864122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b629246338ee54492798b51efe0dfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   player: {fileID: 599119354}
