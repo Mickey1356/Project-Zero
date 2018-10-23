@@ -14,6 +14,9 @@ public class CatController : MonoBehaviour
     private int catId;
     [SerializeField]
     private bool canTouch = true;
+
+    public static CatController cc;
+
     public bool CanTouch
     {
         get
@@ -123,8 +126,13 @@ public class CatController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Awake()
     {
+        cc = this;
+    }
 
+    public void SetDeath()
+    {
+        GetComponent<Animator>().SetBool("moving", false);
     }
 }

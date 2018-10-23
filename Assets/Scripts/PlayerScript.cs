@@ -51,14 +51,18 @@ public class PlayerScript : MonoBehaviour
     void Die()
     {
         Debug.Log("You were killed by a " + killer); //different messages?
-        canMove = false;
-        //death animation, statistics etc.
-        //wait for some time
+                                                     //death animation, statistics etc.
+                                                     //wait for some time
+        PlayerMove.playermove.SetMove(false);
+        CatController.cc.SetDeath();
+        Manager.man.SetText("You died. Restart the game.");
+        Time.timeScale = 0;
         Invoke("ResetStuff", Constants.RESTART_TIME);
     }
 
     private void ResetStuff()
     {
+        Debug.Log("hello");
         Debug.Log("Restarting level...");
         //reset game
         GameManager.gameManager.RestartLevel();

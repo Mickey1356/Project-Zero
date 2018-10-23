@@ -20,8 +20,8 @@ public class Level : MonoBehaviour
     private int spawnXOffset = 10, spawnYOffset = 5;
     private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
 
-    private float catMin = 0.1f;
-    private float catMax = 0.15f;
+    private float catMin = 0.5f;
+    private float catMax = 0.6f;
 
 
     private void GenerateMap()
@@ -209,5 +209,10 @@ public class Level : MonoBehaviour
     public Vector2 GetCatSpawn()
     {
         return catSpawn * Constants.SIZE_SCALE;
+    }
+
+    public Vector2 GetExit()
+    {
+        return playerExit * Constants.SIZE_SCALE;
     }
 }

@@ -102,6 +102,10 @@ public class CatAI : MonoBehaviour
         return GetNode(xpos, ypos);
     }
 
+    private float prevX;
+    private bool facingRight = true;
+    private Vector3 rightScale;
+
     private Dictionary<int, int> PathFind()
     {
         // Classic BFS
@@ -163,7 +167,7 @@ public class CatAI : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0, 0, 1);
-        Gizmos.DrawCube(transform.position, new Vector3(2f, 2f, 1f));
+        Gizmos.DrawCube(transform.position - new Vector3(0, .2f, 0), new Vector3(3f, 2f, 1f));
 
     }
 
@@ -181,17 +185,17 @@ public class CatAI : MonoBehaviour
         }
         float step = speed * Time.deltaTime;
 
-        Collider2D[] colls = Physics2D.OverlapBoxAll(transform.position, new Vector2(1.5f, 1f), 0f);
+        Collider2D[] colls = Physics2D.OverlapBoxAll(transform.position - new Vector3(0, .2f, 0), new Vector3(3f, 2f, 1f), 0f);
         foreach(var col in colls)
         {
-            Debug.Log(col);
+            //Debug.Log(col);
             if (col.tag == "Wall") useGrid = true;
         }
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-        if((l == null || hit.collider.tag == "Dog") && !useGrid)
+        if((l == null || hit.collider.tag == "Player") && !useGrid)
         {
-            Debug.Log(step);
+            //Debug.Log(step);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
         }
         else
@@ -223,6 +227,10 @@ public class CatAI : MonoBehaviour
         adjList = new List<HashSet<int>>();
         this.levelGrid = levelGrid;
         this.player = player;
+        this.prevX = transform.position.x;
+        rightScale = transform.localScale;
+
+        GetComponent<Animator>().SetBool("moving", true);
 
         GenAdjList();
     }
@@ -235,5 +243,23 @@ public class CatAI : MonoBehaviour
         //DebugMap(playerNode, map);
         List<int> l = GetPath(playerNode, map);
         MoveCat(l);
+        
+        if(prevX < transform.position.x)
+        {
+            facingRight = true;
+        }
+        else
+        {
+            facingRight = false;
+        }
+
+        if(facingRight)
+        {
+            transform.localScale = rightScale;
+        }
+        else
+        {
+            transform.localScale = new Vector3(-rightScale.x, rightScale.y, rightScale.z);
+        }
     }
 }
