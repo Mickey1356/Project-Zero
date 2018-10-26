@@ -36,11 +36,11 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	//for stuff like growling and barking
-	void Freeze() {
+	public void Freeze() {
 		canMove = false;
 	}
 
-	void UnFreeze() {
+	public void UnFreeze() {
 		canMove = true;
 	}
 
@@ -68,7 +68,8 @@ public class PlayerScript : MonoBehaviour {
 		//rb2d.AddForce (movement * speed);
 		if (canMove) {
 			rb2d.velocity = movement * speed;
-		}
+		} else
+			rb2d.velocity = Vector2.zero;
 		/*if (moveHorizontal == 0f) {
 			movex = 0f;
 		}
