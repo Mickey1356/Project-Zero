@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
@@ -13,6 +14,8 @@ public class Manager : MonoBehaviour
     private Level level;
     private GameObject cat;
     private GameObject exitGo;
+
+    private bool gameOver = false;
 
     public static Manager man;
 
@@ -42,7 +45,21 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
-        cat.GetComponent<CatAI>().UpdateCat();
+        if (!gameOver)
+        {
+            cat.GetComponent<CatAI>().UpdateCat();
+            if (cat.GetComponent<CatAI>().GetGameOver() || player.GetComponent<PlayerMove>().GetGameOver())
+            {
+                GameOver(player.GetComponent<PlayerMove>().GetWin());
+            }
+        }
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                RestartLevel();
+            }
+        }
 
         // for the perspective tilt
         Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 5, Constants.CAMERA_LAYER);
@@ -50,8 +67,32 @@ public class Manager : MonoBehaviour
 
     public void SetText(string text)
     {
-        Debug.Log("hello");
         endText.SetActive(true);
         endText.GetComponent<Text>().text = text;
+    }
+
+    private void GameOver(bool win)
+    {
+        gameOver = true;
+        cat.GetComponent<CatAI>().SetGameOver(true);
+        player.GetComponent<PlayerMove>().SetGameOver(true);
+
+        cat.GetComponent<CatAI>().GameOver();
+        player.GetComponent<PlayerMove>().GameOver();
+
+        if (win)
+        {
+            SetText("Congratulations!\nYou reached the exit!\nPress R to restart.");
+        }
+        else
+        {
+            SetText("Too bad!\nA cat got you!\nPress R to restart.");
+        }
+    }
+
+    private void RestartLevel()
+    {
+        Debug.Log("Restarting level.");
+        SceneManager.LoadScene(Constants.MAIN_SCENE); // restart the level
     }
 }

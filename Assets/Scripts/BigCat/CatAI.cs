@@ -12,6 +12,9 @@ public class CatAI : MonoBehaviour
     private int[,] levelGrid;
 
     private float speed = Constants.catSpeed;
+    private float collision_dist = Constants.SIZE_SCALE / 4;
+
+    private bool hitPlayer = false, gameOver = false;
 
     private GameObject player;
 
@@ -164,13 +167,6 @@ public class CatAI : MonoBehaviour
         return l;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(0, 0, 1);
-        Gizmos.DrawCube(transform.position - new Vector3(0, .2f, 0), new Vector3(3f, 2f, 1f));
-
-    }
-
     private void MoveCat(List<int> l)
     {
         float xPos = 0f, yPos = 0f;
@@ -185,15 +181,42 @@ public class CatAI : MonoBehaviour
         }
         float step = speed * Time.deltaTime;
 
-        Collider2D[] colls = Physics2D.OverlapBoxAll(transform.position - new Vector3(0, .2f, 0), new Vector3(3f, 2f, 1f), 0f);
-        foreach(var col in colls)
-        {
-            //Debug.Log(col);
-            if (col.tag == "Wall") useGrid = true;
-        }
+        //Collider2D[] colls = Physics2D.OverlapBoxAll(transform.position - new Vector3(0, .2f, 0), new Vector3(3f, 2f, 1f), 0f);
+        //foreach(var col in colls)
+        //{
+        //    //Debug.Log(col);
+        //    if (col.tag == "Wall")
+        //    {
+        //        useGrid = true;
+        //        break;
+        //    }
+        //}
+
+        Vector3 _min = GetComponent<BoxCollider2D>().bounds.min;
+        Vector3 _max = GetComponent<BoxCollider2D>().bounds.max;
+
+        Vector3 pos1 = new Vector2(_min.x, _min.y);
+        Vector3 pos2 = new Vector2(_min.x, _max.y);
+        Vector3 pos3 = new Vector2(_max.x, _min.y);
+        Vector3 pos4 = new Vector2(_max.x, _max.y);
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-        if((l == null || hit.collider.tag == "Player") && !useGrid)
+        RaycastHit2D hit1 = Physics2D.Raycast(pos1, player.transform.position - pos1);
+        RaycastHit2D hit2 = Physics2D.Raycast(pos2, player.transform.position - pos2);
+        RaycastHit2D hit3 = Physics2D.Raycast(pos3, player.transform.position - pos3);
+        RaycastHit2D hit4 = Physics2D.Raycast(pos4, player.transform.position - pos4);
+
+        Debug.DrawRay(pos1, player.transform.position - pos1);
+        Debug.DrawRay(pos2, player.transform.position - pos2);
+        Debug.DrawRay(pos3, player.transform.position - pos3);
+        Debug.DrawRay(pos4, player.transform.position - pos4);
+
+        string tag1 = hit1.collider.tag;
+        string tag2 = hit2.collider.tag;
+        string tag3 = hit3.collider.tag;
+        string tag4 = hit4.collider.tag;
+
+        if ((l == null || hit.collider.tag == "Player") && !useGrid && tag1 == "Player" && tag2 == "Player" && tag3 == "Player" && tag4 == "Player")
         {
             //Debug.Log(step);
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
@@ -222,6 +245,21 @@ public class CatAI : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        Debug.Log("i have hit the dog");
+        hitPlayer = true;
+        GetComponent<Animator>().SetBool("moving", false);
+    }
+
+    //private void OnTriggerEnter2D(Collider2D col)
+    //{
+    //    if (col.tag == "Player")
+    //    {
+    //        GameOver();
+    //    }
+    //}
+
     public void Initialise(int[,] levelGrid, GameObject player)
     {
         adjList = new List<HashSet<int>>();
@@ -237,29 +275,48 @@ public class CatAI : MonoBehaviour
 
     public void UpdateCat()
     {
-        selfNode = GetCurrentGrid();
-        playerNode = GetPlayerPos();
-        Dictionary<int, int> map = PathFind();
-        //DebugMap(playerNode, map);
-        List<int> l = GetPath(playerNode, map);
-        MoveCat(l);
-        
-        if(prevX < transform.position.x)
+        if (!gameOver && !hitPlayer)
         {
-            facingRight = true;
-        }
-        else
-        {
-            facingRight = false;
-        }
+            selfNode = GetCurrentGrid();
+            playerNode = GetPlayerPos();
+            Dictionary<int, int> map = PathFind();
+            //DebugMap(playerNode, map);
+            List<int> l = GetPath(playerNode, map);
+            MoveCat(l);
 
-        if(facingRight)
-        {
-            transform.localScale = rightScale;
+            if (prevX < transform.position.x)
+            {
+                facingRight = true;
+            }
+            else
+            {
+                facingRight = false;
+            }
+
+            if (facingRight)
+            {
+                transform.localScale = rightScale;
+            }
+            else
+            {
+                transform.localScale = new Vector3(-rightScale.x, rightScale.y, rightScale.z);
+            }
+            prevX = transform.position.x;
+
+            if(Vector2.Distance(transform.position, player.transform.position) < collision_dist)
+            {
+                gameOver = true;
+            }
         }
-        else
-        {
-            transform.localScale = new Vector3(-rightScale.x, rightScale.y, rightScale.z);
-        }
+    }
+
+    public bool GetGameOver()
+    {
+        return gameOver;
+    }
+
+    public void SetGameOver(bool value)
+    {
+        gameOver = value;
     }
 }

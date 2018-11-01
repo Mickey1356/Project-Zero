@@ -7,7 +7,7 @@ public class PlayerMove : MonoBehaviour
     public static GameObject player;
 
     private float speed = Constants.playerSpeed;             //Floating point variable to store the player's movement speed.
-    private bool facingLeft = false, canMove = true;
+    private bool facingLeft = false, canMove = true, gameOver = false, win = false;
     private Vector3 rightScale;
 
     public static PlayerMove playermove;
@@ -25,16 +25,10 @@ public class PlayerMove : MonoBehaviour
         rightScale = transform.localScale;
     }
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (canMove)
+        if (!gameOver && canMove)
         {
             //Store the current horizontal input in the float moveHorizontal.
             float moveHorizontal = Input.GetAxis("Horizontal");
@@ -86,8 +80,35 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    public void SetMove(bool value)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        canMove = value;
+        if(col.tag == "Exit")
+        {
+            win = true;
+            gameOver = true;
+        }
+    }
+
+    public void GameOver()
+    {
+        gameOver = true;
+        rb2d.velocity = Vector2.zero;
+        GetComponent<Animator>().SetBool("moving", false);
+        canMove = false;
+    }
+
+    public bool GetGameOver()
+    {
+        return gameOver;
+    }
+
+    public void SetGameOver(bool value)
+    {
+        gameOver = value;
+    }
+
+    public bool GetWin()
+    {
+        return win;
     }
 }

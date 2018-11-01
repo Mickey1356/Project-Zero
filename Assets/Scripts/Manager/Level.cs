@@ -16,12 +16,13 @@ public class Level : MonoBehaviour
 
     // parameters
     private int buildings = 100; // more than 100 might make the game crash because it cannot generate enough buildings
-    private int genLimit = 20000; // how many times to generate buildings
+    private int genLimit = 20000; // how many times to try to generate buildings
     private int spawnXOffset = 10, spawnYOffset = 5;
     private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
+    private float smallCats = .7f; // what percentage of empty space should be small cat spawn
 
-    private float catMin = 0.5f;
-    private float catMax = 0.6f;
+    private float catMin = 0.3f;
+    private float catMax = 0.4f;
 
 
     private void GenerateMap()
@@ -144,6 +145,9 @@ public class Level : MonoBehaviour
         index = Random.Range(catMinIndex, catMaxIndex);
         catSpawn = possibleSpawns[index];
         //levelGrid[(int)catSpawn.x, (int)catSpawn.y] = 4;
+
+        // pick random locations for small cat spawns
+        
         
     }
 
@@ -173,6 +177,7 @@ public class Level : MonoBehaviour
                             break;
                         case 3:
                             go.GetComponent<Renderer>().material.color = Color.yellow;
+                            Destroy(go.GetComponent<BoxCollider2D>());
                             break;
                         case 4:
                             go.GetComponent<Renderer>().material.color = Color.green;

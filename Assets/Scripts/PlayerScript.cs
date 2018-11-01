@@ -53,7 +53,7 @@ public class PlayerScript : MonoBehaviour
         Debug.Log("You were killed by a " + killer); //different messages?
                                                      //death animation, statistics etc.
                                                      //wait for some time
-        PlayerMove.playermove.SetMove(false);
+        PlayerMove.playermove.GameOver();
         CatController.cc.SetDeath();
         Manager.man.SetText("You died. Restart the game.");
         Time.timeScale = 0;

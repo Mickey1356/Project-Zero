@@ -113,7 +113,4 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(Constants.MAIN_SCENE); // restart the level
         }
     }
-
-    // Use this for initialization
-
 }

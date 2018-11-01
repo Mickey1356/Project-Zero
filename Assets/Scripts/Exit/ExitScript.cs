@@ -16,11 +16,4 @@ public class ExitScript : MonoBehaviour
     {
 
     }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        Debug.Log(col.tag);
-        Manager.man.SetText("You win. Restart the game.");
-        Time.timeScale = 0;
-    }
 }
