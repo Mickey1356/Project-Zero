@@ -11,7 +11,7 @@ public class CatAI : MonoBehaviour
     private int selfNode, playerNode;
     private int[,] levelGrid;
 
-    private float speed = Constants.catSpeed;
+    private float speed = Constants.BIGCAT_SPEED;
     private float collision_dist = Constants.SIZE_SCALE / 4;
 
     private bool hitPlayer = false, gameOver = false;

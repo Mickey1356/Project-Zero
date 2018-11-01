@@ -14,20 +14,23 @@ public class Level : MonoBehaviour
 
     private Vector2 playerSpawn, playerExit, catSpawn;
 
+    private List<Vector2> sCatSpawns;
+
     // parameters
     private int buildings = 100; // more than 100 might make the game crash because it cannot generate enough buildings
     private int genLimit = 20000; // how many times to try to generate buildings
     private int spawnXOffset = 10, spawnYOffset = 5;
     private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
-    private float smallCats = .7f; // what percentage of empty space should be small cat spawn
+    private float smallCats = .025f; // what percentage of empty space should be small cat spawn
 
     private float catMin = 0.3f;
     private float catMax = 0.4f;
-
+    private float sCatMin = 0.05f;
 
     private void GenerateMap()
     {
         levelGrid = new int[width, height];
+        sCatSpawns = new List<Vector2>();
 
         GenerateBuildings(buildings);
         GenerateBounds();
@@ -146,8 +149,33 @@ public class Level : MonoBehaviour
         catSpawn = possibleSpawns[index];
         //levelGrid[(int)catSpawn.x, (int)catSpawn.y] = 4;
 
+        List<Vector2> sCatPossibleSpawns = new List<Vector2>();
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                if (levelGrid[i, j] == 0) sCatPossibleSpawns.Add(new Vector2(i, j));
+            }
+        }
+
+        sCatPossibleSpawns = sCatPossibleSpawns.OrderBy(x => Vector2.Distance(x, playerSpawn)).ToList();
+
         // pick random locations for small cat spawns
-        
+        sCatPossibleSpawns.Remove(catSpawn);
+        sCatPossibleSpawns.Remove(playerExit);
+        tlSpawns = sCatPossibleSpawns.Count;
+        int nCats = (int)(tlSpawns * smallCats);
+        Debug.Log(nCats);
+        for(int i = 0; i < nCats; i++)
+        {
+            tlSpawns = sCatPossibleSpawns.Count;
+            int sCatMinIndex = (int)(tlSpawns * sCatMin);
+            index = Random.Range(sCatMinIndex, tlSpawns);
+            Vector2 spawn = sCatPossibleSpawns[index];
+            sCatSpawns.Add(spawn);
+            levelGrid[(int)spawn.x, (int)spawn.y] = 4;
+            sCatPossibleSpawns.Remove(spawn);
+        }
         
     }
 
@@ -181,6 +209,7 @@ public class Level : MonoBehaviour
                             break;
                         case 4:
                             go.GetComponent<Renderer>().material.color = Color.green;
+                            Destroy(go.GetComponent<BoxCollider2D>());
                             break;
                     }
                 }

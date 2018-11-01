@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     public static GameObject player;
 
-    private float speed = Constants.playerSpeed;             //Floating point variable to store the player's movement speed.
+    private float speed = Constants.PLAYER_SPEED;             //Floating point variable to store the player's movement speed.
     private bool facingLeft = false, canMove = true, gameOver = false, win = false;
     private Vector3 rightScale;
 
