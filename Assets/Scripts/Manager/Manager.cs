@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
     public GameObject bigCat;
+    public GameObject smallCat;
     public GameObject player;
     public GameObject exit;
     public GameObject endText;
@@ -17,6 +18,8 @@ public class Manager : MonoBehaviour
 
     private bool gameOver = false;
 
+    private List<GameObject> scats;
+
     public static Manager man;
 
     private void Awake()
@@ -26,6 +29,8 @@ public class Manager : MonoBehaviour
 
         man = this;
         endText.SetActive(false);
+
+        scats = new List<GameObject>();
     }
 
     private void Start()
@@ -41,6 +46,13 @@ public class Manager : MonoBehaviour
 
         exitGo = Instantiate(exit);
         exitGo.transform.position = level.GetExit();
+
+        foreach(Vector2 pos in level.GetSmallCatSpawns())
+        {
+            GameObject scat = Instantiate(smallCat);
+            scats.Add(scat);
+            scat.transform.position = new Vector3(pos.x * Constants.SIZE_SCALE, pos.y * Constants.SIZE_SCALE, Constants.SCAT_LAYER);
+        }
     }
 
     private void Update()
@@ -48,7 +60,7 @@ public class Manager : MonoBehaviour
         if (!gameOver)
         {
             cat.GetComponent<CatAI>().UpdateCat();
-            if (cat.GetComponent<CatAI>().GetGameOver() || player.GetComponent<PlayerMove>().GetGameOver())
+            if (cat.GetComponent<CatAI>().GetGameOver() || player.GetComponent<PlayerMove>().GetGameOver() || CheckSCatGameOver())
             {
                 GameOver(player.GetComponent<PlayerMove>().GetWin());
             }
@@ -65,10 +77,29 @@ public class Manager : MonoBehaviour
         Camera.main.transform.position = new Vector3(player.transform.position.x, player.transform.position.y - 5, Constants.CAMERA_LAYER);
     }
 
+    private bool CheckSCatGameOver()
+    {
+        foreach(GameObject scat in scats)
+        {
+            if (scat.GetComponent<SmallCatAI>().GetGameOver()) return true;
+        }
+
+        return false;
+    }
+
+    private void SmallCatGameOver()
+    {
+        foreach(GameObject scat in scats)
+        {
+            scat.GetComponent<SmallCatAI>().SetGameOver(true);
+            scat.GetComponent<SmallCatAI>().GameOver();
+        }
+    }
+
     public void SetText(string text)
     {
         endText.SetActive(true);
-        endText.GetComponent<Text>().text = text;
+        endText.GetComponentInChildren<Text>().text = text;
     }
 
     private void GameOver(bool win)
@@ -79,6 +110,8 @@ public class Manager : MonoBehaviour
 
         cat.GetComponent<CatAI>().GameOver();
         player.GetComponent<PlayerMove>().GameOver();
+
+        SmallCatGameOver();
 
         if (win)
         {

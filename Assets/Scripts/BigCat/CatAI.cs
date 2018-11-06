@@ -18,6 +18,8 @@ public class CatAI : MonoBehaviour
 
     private GameObject player;
 
+    public int debug_spd_mod;
+
     // every frame OR every x seconds
     // find players current grid position
     // get self current grid position
@@ -269,6 +271,8 @@ public class CatAI : MonoBehaviour
         rightScale = transform.localScale;
 
         GetComponent<Animator>().SetBool("moving", true);
+
+        speed *= debug_spd_mod;
 
         GenAdjList();
     }

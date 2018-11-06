@@ -49,7 +49,7 @@ public class PlayerMove : MonoBehaviour
             //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
             //rb2d.AddForce(movement * speed);
             rb2d.velocity = movement * speed;
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            transform.position = new Vector3(transform.position.x, transform.position.y, 1);
 
             if (moveHorizontal == 0 && moveVertical == 0)
             {

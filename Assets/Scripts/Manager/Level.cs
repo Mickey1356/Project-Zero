@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    public GameObject wall;
+    public GameObject wall, ground;
 
     private int width = Constants.WIDTH, height = Constants.HEIGHT;
 
@@ -113,9 +113,9 @@ public class Level : MonoBehaviour
     {
         List<Vector2> possibleSpawns = new List<Vector2>();
 
-        for(int x = 1; x < width; x++)
+        for (int x = 1; x < width; x++)
         {
-            for(int h = 0; h < spawnYOffset; h++)
+            for (int h = 0; h < spawnYOffset; h++)
             {
                 if (levelGrid[x, h] == 0) possibleSpawns.Add(new Vector2(x, h));
                 if (levelGrid[x, height - 2 - h] == 0) possibleSpawns.Add(new Vector2(x, height - 2 - h));
@@ -150,9 +150,9 @@ public class Level : MonoBehaviour
         //levelGrid[(int)catSpawn.x, (int)catSpawn.y] = 4;
 
         List<Vector2> sCatPossibleSpawns = new List<Vector2>();
-        for(int i = 0; i < width; i++)
+        for (int i = 0; i < width; i++)
         {
-            for(int j = 0; j < height; j++)
+            for (int j = 0; j < height; j++)
             {
                 if (levelGrid[i, j] == 0) sCatPossibleSpawns.Add(new Vector2(i, j));
             }
@@ -166,29 +166,56 @@ public class Level : MonoBehaviour
         tlSpawns = sCatPossibleSpawns.Count;
         int nCats = (int)(tlSpawns * smallCats);
         Debug.Log(nCats);
-        for(int i = 0; i < nCats; i++)
+        for (int i = 0; i < nCats; i++)
         {
             tlSpawns = sCatPossibleSpawns.Count;
             int sCatMinIndex = (int)(tlSpawns * sCatMin);
             index = Random.Range(sCatMinIndex, tlSpawns);
             Vector2 spawn = sCatPossibleSpawns[index];
             sCatSpawns.Add(spawn);
-            levelGrid[(int)spawn.x, (int)spawn.y] = 4;
+            // temporary put green thing to see
+            //levelGrid[(int)spawn.x, (int)spawn.y] = 4;
             sCatPossibleSpawns.Remove(spawn);
         }
-        
+
+        // make walls that are not touching outside black
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                bool sur = true;
+                if (levelGrid[i, j] == 1 || levelGrid[i, j] == 5)
+                {
+                    for (int dx = -1; dx < 2; dx++)
+                    {
+                        for (int dy = -1; dy < 2; dy++)
+                        {
+                            if (i + dx >= 0 && i + dx < width && j + dy >= 0 && j + dy < height && !(dx == 0 && dy == 0))
+                            {
+                                if (levelGrid[i + dx, j + dy] == 0 || levelGrid[i+dx, j+dy] == 3)
+                                {
+                                    sur = false;
+                                }
+                            }
+                        }
+                    }
+                    if (sur) levelGrid[i, j] = 5;
+                }
+            }
+        }
+
     }
 
     private void TestRender()
     {
-        foreach(GameObject go in gos)
+        foreach (GameObject go in gos)
         {
             Destroy(go);
         }
 
-        for(int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++)
         {
-            for(int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
                 if (levelGrid[x, y] != 0)
                 {
@@ -200,9 +227,9 @@ public class Level : MonoBehaviour
                     {
                         case 1:
                             break;
-                        case 2:
-                            go.GetComponent<Renderer>().material.color = Color.red;
-                            break;
+                        //case 2:
+                        //    go.GetComponent<Renderer>().material.color = Color.red;
+                        //    break;
                         case 3:
                             go.GetComponent<Renderer>().material.color = Color.yellow;
                             Destroy(go.GetComponent<BoxCollider2D>());
@@ -211,7 +238,15 @@ public class Level : MonoBehaviour
                             go.GetComponent<Renderer>().material.color = Color.green;
                             Destroy(go.GetComponent<BoxCollider2D>());
                             break;
+                        case 5:
+                            go.GetComponent<Renderer>().material.color = Color.black;
+                            break;
                     }
+                }
+                else
+                {
+                    GameObject go = Instantiate(ground);
+                    go.transform.position = new Vector3(x * Constants.SIZE_SCALE, y * Constants.SIZE_SCALE, 2);
                 }
             }
         }
@@ -248,5 +283,10 @@ public class Level : MonoBehaviour
     public Vector2 GetExit()
     {
         return playerExit * Constants.SIZE_SCALE;
+    }
+
+    public List<Vector2> GetSmallCatSpawns()
+    {
+        return sCatSpawns;
     }
 }
