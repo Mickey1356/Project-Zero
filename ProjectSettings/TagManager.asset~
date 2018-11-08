@@ -5,9 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cat
-  - Wall
-  - Dog
-  - Exit
   layers:
   - Default
   - TransparentFX
@@ -19,7 +16,7 @@ TagManager:
   - 
   - Player
   - Cat
-  - Minimap
+  - 
   - 
   - 
   - 
