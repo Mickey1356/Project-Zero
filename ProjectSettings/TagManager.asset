@@ -8,6 +8,10 @@ TagManager:
   - Wall
   - Dog
   - Exit
+  - Ground
+  - Growl
+  - Bark
+  - SmallCat
   layers:
   - Default
   - TransparentFX
@@ -20,7 +24,7 @@ TagManager:
   - 
   - 
   - Minimap
-  - 
+  - Ground
   - 
   - 
   - 
@@ -44,4 +48,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Entities
+    uniqueID: 1273337773
     locked: 0

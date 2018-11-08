@@ -11,10 +11,16 @@ public class Manager : MonoBehaviour
     public GameObject player;
     public GameObject exit;
     public GameObject endText;
+    public GameObject trash;
+
+    public Transform sCatParent;
+    public Transform trashParent;
 
     private Level level;
     private GameObject cat;
     private GameObject exitGo;
+
+    private float catThreshold = 0.85f;
 
     private bool gameOver = false;
 
@@ -49,9 +55,17 @@ public class Manager : MonoBehaviour
 
         foreach(Vector2 pos in level.GetSmallCatSpawns())
         {
-            GameObject scat = Instantiate(smallCat);
-            scats.Add(scat);
-            scat.transform.position = new Vector3(pos.x * Constants.SIZE_SCALE, pos.y * Constants.SIZE_SCALE, Constants.SCAT_LAYER);
+            if (Random.value < catThreshold)
+            {
+                GameObject scat = Instantiate(smallCat, sCatParent);
+                scats.Add(scat);
+                scat.transform.position = new Vector3(pos.x * Constants.SIZE_SCALE, pos.y * Constants.SIZE_SCALE, Constants.SCAT_LAYER);
+            }
+            else
+            {
+                GameObject go = Instantiate(trash, trashParent);
+                go.transform.position = new Vector3(pos.x * Constants.SIZE_SCALE, pos.y * Constants.SIZE_SCALE, Constants.SCAT_LAYER);
+            }
         }
     }
 

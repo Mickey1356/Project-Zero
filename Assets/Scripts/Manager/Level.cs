@@ -6,6 +6,7 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     public GameObject wall, ground;
+    public Transform wallParent, groundParent;
 
     private int width = Constants.WIDTH, height = Constants.HEIGHT;
 
@@ -21,7 +22,7 @@ public class Level : MonoBehaviour
     private int genLimit = 20000; // how many times to try to generate buildings
     private int spawnXOffset = 10, spawnYOffset = 5;
     private float distLimt = .85f; // what percentage of the furthest distance to choose a random end point from
-    private float smallCats = .025f; // what percentage of empty space should be small cat spawn
+    private float smallCats = .05f; // what percentage of empty space should be small cat spawn
 
     private float catMin = 0.3f;
     private float catMax = 0.4f;
@@ -141,7 +142,7 @@ public class Level : MonoBehaviour
         int minIndex = (int)(tlSpawns * distLimt);
         index = Random.Range(minIndex, tlSpawns);
         playerExit = possibleSpawns[index];
-        levelGrid[(int)playerExit.x, (int)playerExit.y] = 3;
+        //levelGrid[(int)playerExit.x, (int)playerExit.y] = 3;
 
         int catMinIndex = (int)(tlSpawns * catMin);
         int catMaxIndex = (int)(tlSpawns * catMax);
@@ -165,7 +166,6 @@ public class Level : MonoBehaviour
         sCatPossibleSpawns.Remove(playerExit);
         tlSpawns = sCatPossibleSpawns.Count;
         int nCats = (int)(tlSpawns * smallCats);
-        Debug.Log(nCats);
         for (int i = 0; i < nCats; i++)
         {
             tlSpawns = sCatPossibleSpawns.Count;
@@ -213,13 +213,19 @@ public class Level : MonoBehaviour
             Destroy(go);
         }
 
+        GameObject go2 = Instantiate(wall);
+        go2.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Diffuse"));
+        go2.GetComponent<Renderer>().material.color = Color.yellow;
+        go2.transform.position = playerExit * Constants.SIZE_SCALE;
+        gos.Add(go2);
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 if (levelGrid[x, y] != 0)
                 {
-                    GameObject go = Instantiate(wall);
+                    GameObject go = Instantiate(wall, wallParent);
                     go.transform.position = new Vector3(x * Constants.SIZE_SCALE, y * Constants.SIZE_SCALE, 0);
                     gos.Add(go);
 
@@ -245,7 +251,7 @@ public class Level : MonoBehaviour
                 }
                 else
                 {
-                    GameObject go = Instantiate(ground);
+                    GameObject go = Instantiate(ground, groundParent);
                     go.transform.position = new Vector3(x * Constants.SIZE_SCALE, y * Constants.SIZE_SCALE, 2);
                 }
             }

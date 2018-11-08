@@ -14,7 +14,7 @@ public class CatAI : MonoBehaviour
     private float speed = Constants.BIGCAT_SPEED;
     private float collision_dist = Constants.SIZE_SCALE / 4;
 
-    private bool hitPlayer = false, gameOver = false;
+    private bool hitPlayer = false, gameOver = false, canMove = true;
 
     private GameObject player;
 
@@ -23,7 +23,7 @@ public class CatAI : MonoBehaviour
     // every frame OR every x seconds
     // find players current grid position
     // get self current grid position
-    // path-find to player (Dijkstra? DFS? BFS?) BFS since unweighted graph
+    // path-find to player BFS since unweighted graph
 
     private List<HashSet<int>> adjList;
 
@@ -218,14 +218,17 @@ public class CatAI : MonoBehaviour
         string tag3 = hit3.collider.tag;
         string tag4 = hit4.collider.tag;
 
-        if ((l == null || hit.collider.tag == "Player") && !useGrid && tag1 == "Player" && tag2 == "Player" && tag3 == "Player" && tag4 == "Player")
+        if (canMove)
         {
-            //Debug.Log(step);
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos, yPos, 0), step);
+            if ((l == null || hit.collider.tag == "Player") && !useGrid && tag1 == "Player" && tag2 == "Player" && tag3 == "Player" && tag4 == "Player")
+            {
+                //Debug.Log(step);
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos, yPos, 0), step);
+            }
         }
 
         //this.GetComponent<Rigidbody2D>().AddForce(10 * new Vector2(xPos - this.transform.position.x, yPos - this.transform.position.y));
@@ -249,7 +252,6 @@ public class CatAI : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("i have hit the dog");
         hitPlayer = true;
         GetComponent<Animator>().SetBool("moving", false);
     }
@@ -310,6 +312,7 @@ public class CatAI : MonoBehaviour
             if(Vector2.Distance(transform.position, player.transform.position) < collision_dist)
             {
                 gameOver = true;
+                Debug.Log("the big cat hit the dog");
             }
         }
     }
@@ -322,5 +325,18 @@ public class CatAI : MonoBehaviour
     public void SetGameOver(bool value)
     {
         gameOver = value;
+    }
+
+    public void Freeze()
+    {
+        // only called when cat is being stunned
+        canMove = false;
+        GetComponent<Animator>().SetBool("moving", false);
+    }
+
+    public void Unfreeze()
+    {
+        canMove = true;
+        GetComponent<Animator>().SetBool("moving", true);
     }
 }
