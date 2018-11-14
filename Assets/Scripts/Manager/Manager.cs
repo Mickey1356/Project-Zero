@@ -129,17 +129,17 @@ public class Manager : MonoBehaviour
 
         if (win)
         {
-            SetText("Congratulations!\nYou reached the exit!\nPress R to restart.");
+            SetText("Congratulations!\nYou reached the exit!\nPress R to return to the main menu.");
         }
         else
         {
-            SetText("Too bad!\nA cat got you!\nPress R to restart.");
+            SetText("Too bad!\nA cat got you!\nPress R to return to the main menu.");
         }
     }
 
     private void RestartLevel()
     {
         Debug.Log("Restarting level.");
-        SceneManager.LoadScene(Constants.MAIN_SCENE); // restart the level
+        SceneManager.LoadScene(Constants.MENU_SCENE); // restart the level
     }
 }
