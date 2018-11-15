@@ -19,7 +19,7 @@ public class PlayerAbilities : MonoBehaviour
     private float startBarkWidth = .2f;
 
     private bool canBark = true;
-    private float barkCooldown = 10f, barkCooldownPassed = 0;
+    private float barkCooldown = 1f, barkCooldownPassed = 0;
 
     private bool gameOver = false;
 
@@ -87,6 +87,7 @@ public class PlayerAbilities : MonoBehaviour
             pm.Barking();
             barkerActual = Instantiate(barker, this.transform);
             //barkerActual.transform.position = this.transform.position;
+
             Vector2[] pts = new Vector2[] { new Vector2(barkLength, barkWidth / 2),
                                             new Vector2(barkLength, -barkWidth / 2),
                                             new Vector2(0, -startBarkWidth / 2),
